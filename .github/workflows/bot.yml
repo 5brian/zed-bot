@@ -1,16 +1,16 @@
 name: Bluesky Bot
 
 on:
-  schedule:
-    - cron: "*/10 * * * *"
-  workflow_dispatch:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
 
 jobs:
-  run-bot:
+  post:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Bot Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -21,8 +21,8 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Bot Script
+      - name: Run Bluesky post script
         env:
-          BSKY_USER: ${{ secrets.BSKY_USER }}
-          BSKY_PASS: ${{ secrets.BSKY_PASS }}
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_PASSWORD: ${{ secrets.BSKY_PASSWORD }}
         run: node index.js
