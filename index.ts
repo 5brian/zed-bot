@@ -27,8 +27,8 @@ async function postGitHubUpdates() {
     for (const issue of issues) {
       const type = issue.pull_request ? "Pull Request" : "Issue";
       const title = issue.title;
-      const url = issue.html_url;
-      const message = `New ${type}: ${title}\n${url}\n`;
+      const url = issue.html_url.replace(/^https?:\/\//, "");
+      const message = `New ${type}: ${title} (${url.split("/").pop()})\n${url}\n`;
 
       try {
         await agent.post({
